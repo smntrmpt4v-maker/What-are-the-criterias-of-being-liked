@@ -1,8 +1,9 @@
 <script>
   let images = [
-    "images/dessin1.jpg",
-    "images/dessin2.jpg",
-    "images/dessin3.jpg"
+    "IMG_5933.jpg",
+    "IMG_5932.jpg",
+    "IMG_5931.jpg",
+"IMG_5930.jpeg" 
   ];
 
   const container = document.getElementById('container');
