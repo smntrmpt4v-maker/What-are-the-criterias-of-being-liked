@@ -1,0 +1,63 @@
+<script>
+  let images = [
+    "images/dessin1.jpg",
+    "images/dessin2.jpg",
+    "images/dessin3.jpg"
+  ];
+
+  const container = document.getElementById('container');
+
+  function createCard(src) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `<img src="${src}">`;
+    container.appendChild(card);
+
+    let offsetX = 0;
+
+    card.addEventListener("pointerdown", e => {
+      offsetX = e.clientX;
+      card.setPointerCapture(e.pointerId);
+    });
+
+    card.addEventListener("pointermove", e => {
+      if (e.pressure === 0) return;
+      const dx = e.clientX - offsetX;
+      card.style.transform = `translate(${dx}px, 0) rotate(${dx/10}deg)`;
+    });
+
+    card.addEventListener("pointerup", e => {
+      const dx = e.clientX - offsetX;
+
+      if (dx > 120) {
+        card.style.transform = "translate(400px, 0) rotate(30deg)";
+        card.style.opacity = "0";
+        swipeDone();
+      } else if (dx < -120) {
+        card.style.transform = "translate(-400px, 0) rotate(-30deg)";
+        card.style.opacity = "0";
+        swipeDone();
+      } else {
+        card.style.transform = "";
+      }
+    });
+  }
+
+  // Quand on swipe une carte → en rajoute une nouvelle après un court délai
+  function swipeDone() {
+    setTimeout(() => {
+      const swipedCard = container.firstChild;
+      swipedCard.remove();
+
+      // Met l’image swipée à la fin → boucle infinie
+      const nextImage = images.shift();
+      images.push(nextImage);
+
+      // Ajoute une nouvelle carte avec l’image suivante
+      createCard(images[0]);
+    }, 300);
+  }
+
+  // Création des 3 premières cartes visibles
+  images.forEach(img => createCard(img));
+</script>
